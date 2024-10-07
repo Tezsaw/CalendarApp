@@ -1,0 +1,24 @@
+﻿@model List<CalendarActivity>
+@{
+    ViewData["Title"] = "Planned Activities/Events";
+    int i = 0;
+    string itemColor;
+}
+<h1>@ViewData["Title"]</h1>
+
+<ol class="list-group list-group-numbered">
+    @foreach (CalendarActivity a in Model)
+    {
+        if (++i % 2 == 0)
+        {
+            itemColor = "secondary";
+        } else
+        {
+            itemColor = "primary";
+        }
+        <li class="list-group-item list-group-item-@itemColor">
+            '@a.Name' at @a.Date.ToString("h:mm tt") on @a.Date.ToString("MMM d, yyy")
+            <a asp-action="Delete" asp-route-id="@a.Id" class="btn btn-sm btn-danger"><img src="~/DeleteIcon.png" /></a>
+        </li>
+    }
+</ol>

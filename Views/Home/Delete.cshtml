@@ -1,0 +1,21 @@
+﻿@model CalendarApp.Models.CalendarActivity
+@{
+    ViewData["Title"] = "Delete Event";
+}
+
+<h1>Delete</h1>
+
+<h2>Delete a calendar event/activity</h2>
+<h1 class="display-6">Are you <span class="text-info fw-bold">sure</span>
+    you want to delete '<span class="text-danger">@(Model.Name ?? "Error loading event name.")</span>'</h1>
+
+<form method="post">
+    <div class="form-group row">
+        <div class="col-3 offset-3">
+            <input type="submit" value="Delete This Event/Activity" class="btn btn-info form-control" />
+        </div>
+        <div class="col-3">
+            <a asp-action="FullList" asp-controller="Home" class="btn btn-secondary form-control">Cancel</a>
+        </div>
+    </div>
+</form>

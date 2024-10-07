@@ -1,0 +1,38 @@
+﻿@model CalendarApp.Models.CalendarActivity
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<h1>Create</h1>
+
+<h2>Create a new calendar event/activity</h2>
+
+<form method="post">
+    <div class="form-group row">
+        <div class="col-3">
+            <label asp-for="Name"></label>
+        </div>
+        <div class="col-6">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <hr/>
+    <div class="form-group row">
+        <div class="col-3">
+            <label asp-for="Date"></label>
+        </div>
+        <div class="col-6">
+            <input type="datetime-local" asp-for="Date" value="@DateTime.Today.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss")" class="form-control" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-3 offset-3">
+            <input type="submit" value="Create" class="btn btn-info form-control" />
+        </div>
+        <div class="col-3">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary form-control">Back to calendar (cancel)</a>
+        </div>
+    </div>
+</form>

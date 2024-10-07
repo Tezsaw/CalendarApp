@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using CalendarApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite("Data Source=MyDatabase.db"));
 
 var app = builder.Build();
 

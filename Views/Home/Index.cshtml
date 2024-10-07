@@ -1,8 +1,110 @@
-﻿@{
+﻿@model CalendarViewInfo
+@{
     ViewData["Title"] = "Home Page";
+
+    int setDateYear, setDateMonth;
+
+    if (Model.Month == null || Model.Month <= 0 || Model.Month > 12)
+    {
+        setDateMonth = DateTime.Now.Month;
+    } else
+    {
+        setDateMonth = (int)Model.Month;
+    }
+
+    if (Model.Year == null || Model.Year <= 0 || Model.Year > 9999)
+    {
+        setDateYear = DateTime.Now.Year;
+    }
+    else
+    {
+        setDateYear = (int)Model.Year;
+    }
+
+    DateTime setDate = new DateTime(
+        setDateYear,
+        setDateMonth,
+        1
+    );
 }
+
+<script defer src="~/js/index.js"></script>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<a asp-action="Create" class="btn btn-primary">Add new event or activity</a>
+
+<h1 class="display-3">@setDate.ToString("MMMM")</h1>
+
+<label class="d-inline-flex">
+    <label for="month-input" class="mx-2">Month:</label>
+    <select class="form-select btn-outline-secondary btn-sm mx-2" id="month-input" aria-label="Current Displayed Month">
+        @for (short k = 1; k <= 12; k++)
+        {
+            @if (k == setDateMonth)
+            {
+                <option selected value="@k">@setDate.ToString("MMMM")</option>
+            } else
+            {
+                <option value="@k">@(new DateTime(1, k, 1).ToString("MMMM"))</option>
+            }
+        }
+    </select>
+    <label for="year-input" class="mx-2">Year: </label>
+    <input type="number" class="mx-2" value="@setDateYear" id="year-input" min="1" max="9999" />
+    <button class="btn btn-secondary mx-2 text-nowrap" id="go-to-time-input">Go To Month</button>
+</label>
+
+<table class="table table-bordered table-primary">
+    <thead>
+        <tr>
+            <th scope="col">Sunday</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thursday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            short curDay = 1;
+            short i = 0;
+        }
+        @while (curDay <= DateTime.DaysInMonth(setDate.Year, setDate.Month))
+        {
+            <tr>
+                @for (short j = 0; j < 7; j++) {
+                    @if ((i != 0 || j >= (short)setDate.DayOfWeek) &&
+                        curDay <= DateTime.DaysInMonth(setDateYear, setDateMonth))
+                    {
+                        <td class="table-danger">
+                            @(curDay++)
+                            @if (Model.Activities != null)
+                            {
+                                @foreach (CalendarActivity a in Model.Activities)
+                                {
+                                    @if (a.Date.Year == setDateYear &&
+                                         a.Date.Month == setDateMonth &&
+                                         a.Date.Day == curDay - 1)
+                                    {
+                                        <p>
+                                            '@a.Name' at @a.Date.ToString("h:mm tt")
+                                        </p>
+                                    }
+                                }
+                            }
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+                }
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
